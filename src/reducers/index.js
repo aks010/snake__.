@@ -1,5 +1,13 @@
-import { combineReducers } from "redux";
+import { combineReducers, createStore } from "redux";
 
-const reducers = {};
+import { PauseReducer } from "./pause";
+import { GameoverReducer } from "./gameover";
+import { PlayReducer } from "./play";
 
-export const store = combineReducers(reducers);
+const reducers = {
+  pause: PauseReducer,
+  play: PlayReducer,
+  gameover: GameoverReducer,
+};
+
+export const store = createStore(combineReducers(reducers));
