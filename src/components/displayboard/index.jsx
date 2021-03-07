@@ -2,13 +2,26 @@ import React from "react";
 import { connect } from "react-redux";
 
 class DisplayBoard extends React.Component {
-  UNSAFE_componentWillReceiveProps(nP) {
-    console.log(nP);
+  state = {
+    paused: null,
+  };
+  componentDidUpdate(prevProps) {
+    if (this.props.pause != prevProps.pause) {
+      this.setState({ pause: this.props.pause });
+    }
   }
 
   render() {
-    console.log(this.props);
-    return <div>DISPLAY MENU/GAMEOVER</div>;
+    const { pause } = this.props;
+    return (
+      <div>
+        {pause ? (
+          <React.Fragment>GAME PAUSED</React.Fragment>
+        ) : (
+          <React.Fragment>PLAYING</React.Fragment>
+        )}
+      </div>
+    );
   }
 }
 

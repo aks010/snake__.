@@ -28,8 +28,24 @@ export const GetCurrentMoveInitial = () => {
 
 export const GetNewChocopieInitial = () => {
   let free_ids = GetFreeGridsInitial();
-  console.log(free_ids);
   let random_idx = Math.floor(Math.random() * free_ids.length);
   console.log(random_idx);
+  return free_ids[random_idx];
+};
+
+// free ids
+const getFreeIds = (snake_ids) => {
+  let free_ids = [];
+  for (let i = 1; i <= GRID_LENGTH * GRID_WIDTH; i++) {
+    if (!snake_ids.includes(i)) free_ids.push(i);
+  }
+  return free_ids;
+};
+
+// chocopieid
+
+export const generateChocopie = (snake_ids) => {
+  let free_ids = getFreeIds(snake_ids);
+  let random_idx = Math.floor(Math.random() * free_ids.length);
   return free_ids[random_idx];
 };

@@ -10,8 +10,8 @@ export const initial = {
   play: false,
   pause: true,
   gameover: false,
-  currentmove: GetCurrentMoveInitial(),
-  chocopie_id: GetNewChocopieInitial(),
-  snake: GetSnakeInital(),
-  free: GetFreeGridsInitial(),
+  currentMove: GetCurrentMoveInitial(),
+  chocopieId: GetNewChocopieInitial(),
+  snakeIds: GetSnakeInital(),
+  freeIds: GetFreeGridsInitial(),
 };

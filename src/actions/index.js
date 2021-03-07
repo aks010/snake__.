@@ -1,11 +1,28 @@
-import { MOVE, PLAY, PAUSE, GOAL, GAMEOVER, GENERATE_CHOCOPIE } from "./types";
+import {
+  MOVE,
+  PLAY,
+  PAUSE,
+  GOAL,
+  GAMEOVER,
+  EAT_CHOCOPIE,
+  GENERATE_CHOCOPIE,
+} from "./types";
 
-export const MoveSnake = ({ head, tail }) => {
+export const MoveSnake = (head) => {
   return {
     type: MOVE,
     payload: {
       head,
-      tail,
+      // tail,
+    },
+  };
+};
+
+export const EatChocopie = (head) => {
+  return {
+    type: EAT_CHOCOPIE,
+    payload: {
+      head,
     },
   };
 };
@@ -16,9 +33,10 @@ export const Play = () => {
   };
 };
 
-export const Pause = () => {
+export const Pause = (data) => {
   return {
     type: PAUSE,
+    payload: data,
   };
 };
 
@@ -28,9 +46,9 @@ export const Goal = () => {
   };
 };
 
-export const GENERATE_CHOCOPIE = ({ new_chocopie_id }) => {
+export const Generate_Chocopie = ({ new_chocopie_id }) => {
   return {
-    type: PAUSE,
+    type: GENERATE_CHOCOPIE,
     payload: {
       id: new_chocopie_id,
     },
