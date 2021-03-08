@@ -1,8 +1,5 @@
 import { LEFT, UP, RIGHT, DOWN, ESC, SPACE, KEYCODE } from "./globals";
-
-const validate = (move, head) => {
-  return true;
-};
+import { MovementValidator } from "./validator";
 
 export const handleMovement = (pressed, chocopieId, headId) => {
   let valid = true,
@@ -15,7 +12,7 @@ export const handleMovement = (pressed, chocopieId, headId) => {
   switch (KEYCODE[pressed]) {
     case UP: {
       console.log("CHEKC UP");
-      let { validMove, newHead } = validate(UP, headId);
+      let { validMove, newHead } = MovementValidator(UP, headId);
       if (!validMove) {
         valid = false;
         gameOver = true;
@@ -33,6 +30,7 @@ export const handleMovement = (pressed, chocopieId, headId) => {
       break;
     }
   }
-
-  return { valid, gameOver, chocopie, pause, head };
+  const nextMove = KEYCODE[pressed];
+  console.log({ valid, gameOver, chocopie, pause, head, nextMove });
+  return { valid, gameOver, chocopie, pause, head, nextMove };
 };

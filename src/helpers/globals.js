@@ -20,3 +20,10 @@ export const KEYCODE = {
   27: ESC,
   32: SPACE,
 };
+
+export const RKEYCODE = {
+  LEFT: 37,
+  UP: 38,
+  RIGHT: 39,
+  DOWN: 40,
+};
