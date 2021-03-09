@@ -1,9 +1,12 @@
 import React from "react";
-
+import "./index.css";
 class GridCell extends React.Component {
   render() {
     return (
-      <div id={this.props.id && this.props.id}>Grid Cell {this.props.id}</div>
+      <div
+        // id={this.props.id && this.props.id}
+        className="gridcell"
+      ></div>
     );
   }
 }

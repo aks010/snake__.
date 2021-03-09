@@ -1,0 +1,18 @@
+.gridcell {
+  width: 10px;
+  height: 10px;
+  border-radius: 1rem;
+  border: 1px solid #3700b3;
+}
+
+.chocopie {
+  background-color: #b00020;
+}
+
+.snake {
+  background-color: rebeccapurple;
+}
+
+.grid-row {
+  display: flex;
+}

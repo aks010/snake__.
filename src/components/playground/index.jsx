@@ -11,59 +11,43 @@ import {
   EatChocopie,
   GameOver,
   Generate_Chocopie,
+  CurrentMove,
 } from "../../actions";
 import { handleMovement } from "../../helpers/movement";
 import { generateChocopie } from "../../helpers/elements";
-import { RKEYCODE } from "../../helpers/globals";
-
-let interval = null;
-let timer = null;
-let SNAKE_SPEED = 1000;
-
-let PerformAutoKeyPress = (keyCode) => {
-  console.log("PRESSED KEY", keyCode);
-  var keyboardEvent = document.createEvent("KeyboardEvent");
-  var initMethod =
-    typeof keyboardEvent.initKeyboardEvent !== "undefined"
-      ? "initKeyboardEvent"
-      : "initKeyEvent";
-
-  keyboardEvent[initMethod](
-    "keydown", // event type: keydown, keyup, keypress
-    true, // bubbles
-    true, // cancelable
-    window, // view: should be window
-    false, // ctrlKey
-    false, // altKey
-    false, // shiftKey
-    false, // metaKey
-    keyCode, // keyCode: unsigned long - the virtual key code, else 0
-    0 // charCode: unsigned long - the Unicode character associated with the depressed key, else 0
-  );
-  document.dispatchEvent(keyboardEvent);
-};
-
-let cnt = 0;
+import {
+  ClearSetInterval,
+  CreateSetInterval,
+} from "../../helpers/keyboardSimulate";
+import { GRID_LENGTH, GRID_WIDTH } from "../../helpers/constants";
 
 class Playground extends React.Component {
   state = {
     snakeIds: [],
+    chocopieId: null,
   };
+
+  componentDidMount() {
+    document.addEventListener("keydown", this.handleKeyDown);
+  }
 
   componentDidUpdate(prevProps) {
     const { snakeIds: propsSnakeIds } = this.props;
     const { snakeIds: prevSnakeIds } = prevProps;
+    console.log(
+      "Chocopie @: ",
+      this.props.chocopieId,
+      "Prev: ",
+      prevProps.chocopieId
+    );
+    if (this.props.chocopieId != prevProps.chocopieId) {
+      console.log("New Chocopie @: ", this.props.chocopieId);
+      this.setState({ chocopieId: this.props.chocopieId });
+    }
 
     const prevHead = propsSnakeIds[propsSnakeIds.length - 1];
     const presentHead = prevSnakeIds[prevSnakeIds.length - 1];
-    console.log("PRESENTIDS");
-    // console.log(propsSnakeIds);
-    // console.log(prevSnakeIds);
-    // console.log(prevHead, presentHead);
-    if (prevHead != presentHead) {
-      console.log("SEEMING");
-      console.log(propsSnakeIds);
-      console.log(prevSnakeIds);
+    if (prevHead !== presentHead) {
       this.setState({ snakeIds: propsSnakeIds });
     }
   }
@@ -72,77 +56,77 @@ class Playground extends React.Component {
     this.props.Pause(!this.props.pause);
   };
 
-  handleKeyPress = (event) => {
-    console.log("KEY PREESE");
+  handleKeyDown = (event) => {
     const { valid, gameOver, chocopie, pause, head, nextMove } = handleMovement(
       event.keyCode,
+      this.props.currentMove,
       this.props.chocopieId,
+      this.props.snakeIds[this.props.snakeIds.length - 1],
+      this.props.snakeIds
+    );
+    // console.log({ valid, gameOver, chocopie, pause, head, nextMove });
+    console.log(
+      "Chocopie Id: ",
+      this.props.chocopieId,
+      "Head: ",
       this.props.snakeIds[this.props.snakeIds.length - 1]
     );
-    console.log("PAUSE PRINT", pause);
-    console.log(
-      "CURRENT MOVE: ",
-      this.props.currentMove,
-      RKEYCODE[this.props.currentMove]
-    );
     if (gameOver) {
-      // CLEARSETINTERVAL()
-      console.log("GAMEOVER!!!!");
-      window.clearInterval(interval);
-      cnt = 0;
-      return this.props.GameOver();
-    } else if (pause) {
-      // CLEARSETINTERVAL()
-      window.clearInterval(interval);
-      cnt = 0;
+      console.log("G A M E  O V E R");
+      ClearSetInterval();
       this.props.Pause(!this.props.pause);
-    } else if (valid && chocopie) {
-      console.log("CHOCOPIE!!!!");
-      if (this.props.currentMove != nextMove) {
-        // CLEARSETINTERVAL();
-        window.clearInterval(interval);
-        cnt = 0;
-        // CREATESETINTERVAL(DIRN);
-        interval = window.setInterval(() => {
-          console.log("Pressing: ", ++cnt);
-          PerformAutoKeyPress(RKEYCODE[this.props.currentMove]);
-        }, SNAKE_SPEED);
+      return this.props.GameOver();
+    }
+    if (pause) {
+      ClearSetInterval();
+      return this.props.Pause(!this.props.pause);
+    }
+    if (valid && chocopie) {
+      console.log("********* CHOCOPIE... YUMMY **********");
+      if (this.props.currentMove !== nextMove) {
+        ClearSetInterval();
+        CreateSetInterval(event.keyCode);
       }
-      interval = window.setInterval(() => {
-        console.log("Pressing: ", ++cnt);
-        PerformAutoKeyPress(RKEYCODE[this.props.currentMove]);
-      }, SNAKE_SPEED);
       this.props.EatChocopie(head);
-
+      //   // INCR _SCORE
       const newChocopieId = generateChocopie(this.props.snakeIds);
-
-      this.props.Generate_Chocopie(newChocopieId);
-    } else if (valid) {
-      console.log("DOES UP NOT REACH HEAR");
-      console.log("NO IT DOES!!!!");
-      console.log(this.props.currentMove, nextMove);
-      if (this.props.currentMove != nextMove) {
-        // CLEARSETINTERVAL();
-        window.clearInterval(interval);
-        cnt = 0;
-
-        // CREATESETINTERVAL(DIRN)
-        interval = window.setInterval(() => {
-          console.log("Pressing: ", ++cnt);
-          PerformAutoKeyPress(RKEYCODE[nextMove]);
-        }, SNAKE_SPEED);
+      console.log("NEW CHOCOPIE ID: ", newChocopieId);
+      return this.props.Generate_Chocopie(newChocopieId);
+    }
+    if (valid) {
+      console.log("+++++++VALID MOVE+++++++");
+      if (this.props.currentMove !== nextMove) {
+        console.log(this.props.currentMove, "!==", nextMove);
+        this.props.CurrentMove(nextMove);
+        ClearSetInterval();
+        CreateSetInterval(event.keyCode);
       }
       return this.props.MoveSnake(head);
     }
   };
 
+  renderGrid = () => {
+    let id = 1;
+    let component = [];
+    for (let i = 1; i <= GRID_LENGTH; i++) {
+      let tmpComp = [];
+      for (let j = 1; j <= GRID_WIDTH; j++) {
+        if (this.props.snakeIds.includes(id)) {
+          tmpComp.push(<SnakeCell />);
+        } else if (this.props.chocopieId === id) {
+          tmpComp.push(<ChocopieCell />);
+        } else tmpComp.push(<GridCell />);
+        id++;
+      }
+      component.push(<div className="grid-row">{tmpComp}</div>);
+    }
+    return component;
+  };
+
   render() {
     return (
-      <div onKeyDown={this.handleKeyPress}>
-        <GridCell />
-        <SnakeCell />
-        <ChocopieCell />
-        <ScoreBoard />
+      <div id="test" tabIndex="0">
+        {this.renderGrid()}
         <button onClick={this.handleClick}>
           {this.props.pause ? (
             <React.Fragment>Resume</React.Fragment>
@@ -150,16 +134,14 @@ class Playground extends React.Component {
             <React.Fragment>Pause</React.Fragment>
           )}
         </button>
-        <button> Move</button>
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => {
-  //   console.log(state);
   const { chocopieId, snakeIds, currentMove, pause } = state;
-  //   console.log({ chocopieId, snakeIds, currentMove });
+
   return {
     chocopieId,
     snakeIds,
@@ -171,6 +153,8 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
   Pause,
   MoveSnake,
+  CurrentMove,
   EatChocopie,
   GameOver,
+  Generate_Chocopie,
 })(Playground);

@@ -1,9 +1,13 @@
 import React from "react";
+import "./index.css";
 
 class SnakeCell extends React.Component {
   render() {
     return (
-      <div id={this.props.id && this.props.id}>Sanke Cell {this.props.id}</div>
+      <div
+        // id={this.props.id && this.props.id}
+        className="gridcell snake"
+      ></div>
     );
   }
 }

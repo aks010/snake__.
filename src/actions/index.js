@@ -5,6 +5,7 @@ import {
   GOAL,
   GAMEOVER,
   EAT_CHOCOPIE,
+  CURRENT_MOVE,
   GENERATE_CHOCOPIE,
 } from "./types";
 
@@ -14,6 +15,15 @@ export const MoveSnake = (head) => {
     payload: {
       head,
       // tail,
+    },
+  };
+};
+
+export const CurrentMove = (dirn) => {
+  return {
+    type: CURRENT_MOVE,
+    payload: {
+      dirn: dirn,
     },
   };
 };
@@ -46,7 +56,7 @@ export const Goal = () => {
   };
 };
 
-export const Generate_Chocopie = ({ new_chocopie_id }) => {
+export const Generate_Chocopie = (new_chocopie_id) => {
   return {
     type: GENERATE_CHOCOPIE,
     payload: {

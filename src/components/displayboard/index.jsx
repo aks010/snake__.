@@ -6,7 +6,7 @@ class DisplayBoard extends React.Component {
     paused: null,
   };
   componentDidUpdate(prevProps) {
-    if (this.props.pause != prevProps.pause) {
+    if (this.props.pause !== prevProps.pause) {
       this.setState({ pause: this.props.pause });
     }
   }
@@ -27,8 +27,7 @@ class DisplayBoard extends React.Component {
 
 const mapStateToProps = (state) => {
   const { gameover, play, pause } = state;
-  console.log("HERE");
-  console.log(state);
+
   return {
     gameover,
     play,
