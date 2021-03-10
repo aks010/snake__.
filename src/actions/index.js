@@ -65,8 +65,11 @@ export const Generate_Chocopie = (new_chocopie_id) => {
   };
 };
 
-export const GameOver = () => {
+export const GameOver = (val) => {
   return {
     type: GAMEOVER,
+    payload: {
+      gameover: val,
+    },
   };
 };

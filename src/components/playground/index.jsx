@@ -25,6 +25,7 @@ class Playground extends React.Component {
   state = {
     snakeIds: [],
     chocopieId: null,
+    score: 0,
   };
 
   componentDidMount() {
@@ -44,6 +45,9 @@ class Playground extends React.Component {
       console.log("New Chocopie @: ", this.props.chocopieId);
       this.setState({ chocopieId: this.props.chocopieId });
     }
+    if (this.props.score != prevProps.score) {
+      this.setState({ score: this.props.score });
+    }
 
     const prevHead = propsSnakeIds[propsSnakeIds.length - 1];
     const presentHead = prevSnakeIds[prevSnakeIds.length - 1];
@@ -57,6 +61,8 @@ class Playground extends React.Component {
   };
 
   handleKeyDown = (event) => {
+    if (this.props.gameover || this.props.menu) return;
+    console.log(this.props.gameover);
     const { valid, gameOver, chocopie, pause, head, nextMove } = handleMovement(
       event.keyCode,
       this.props.currentMove,
@@ -74,10 +80,11 @@ class Playground extends React.Component {
     if (gameOver) {
       console.log("G A M E  O V E R");
       ClearSetInterval();
-      this.props.Pause(!this.props.pause);
-      return this.props.GameOver();
+      // this.props.Pause(!this.props.pause);
+      return this.props.GameOver(true);
     }
     if (pause) {
+      console.log("PAUSING ");
       ClearSetInterval();
       return this.props.Pause(!this.props.pause);
     }
@@ -127,26 +134,31 @@ class Playground extends React.Component {
     return (
       <div id="test" tabIndex="0">
         {this.renderGrid()}
-        <button onClick={this.handleClick}>
-          {this.props.pause ? (
-            <React.Fragment>Resume</React.Fragment>
-          ) : (
-            <React.Fragment>Pause</React.Fragment>
-          )}
-        </button>
+        <div>Score: {this.state.score}</div>
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => {
-  const { chocopieId, snakeIds, currentMove, pause } = state;
+  const {
+    gameover,
+    chocopieId,
+    snakeIds,
+    currentMove,
+    pause,
+    menu,
+    score,
+  } = state;
 
   return {
     chocopieId,
     snakeIds,
+    score,
     pause,
+    menu,
     currentMove,
+    gameover,
   };
 };
 

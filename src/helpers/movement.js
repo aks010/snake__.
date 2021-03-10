@@ -32,7 +32,7 @@ export const handleMovement = (
     head = null;
 
   pressed = ConsiderOpposite(KEYCODE[pressed], currentMove);
-
+  console.log(pressed);
   switch (KEYCODE[pressed]) {
     case UP: {
       let { validMove, newHead } = MovementValidator(UP, headId);
@@ -87,6 +87,7 @@ export const handleMovement = (
       break;
     }
     case SPACE || ESC: {
+      console.log("SPACE PRESSED");
       pause = true;
       break;
     }
