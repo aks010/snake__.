@@ -1,0 +1,11 @@
+body {
+  background-color: black;
+}
+
+.layout {
+  margin: auto;
+  text-align: center;
+  /* border: 1px solid white; */
+  color: white;
+  width: fit-content;
+}

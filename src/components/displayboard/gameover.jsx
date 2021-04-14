@@ -2,7 +2,13 @@ import React from "react";
 
 class GameOver extends React.Component {
   render() {
-    return <div>GA M E OVER</div>;
+    return (
+      <div>
+        Oops!! You Got Stucked!!!
+        <br />
+        Reload for better Score :P!
+      </div>
+    );
   }
 }
 

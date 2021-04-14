@@ -134,6 +134,7 @@ class Playground extends React.Component {
     return (
       <div id="test" tabIndex="0">
         {this.renderGrid()}
+        <br />
         <div>Score: {this.state.score}</div>
       </div>
     );

@@ -22,7 +22,15 @@ class DisplayBoard extends React.Component {
   }
 
   render() {
-    return <div>{this.state.gameover && <GameOver />}</div>;
+    return (
+      <div style={{ padding: "1rem" }}>
+        {this.state.gameover ? (
+          <GameOver />
+        ) : (
+          <React.Fragment>SNAKE RUNORIDE</React.Fragment>
+        )}
+      </div>
+    );
   }
 }
 
